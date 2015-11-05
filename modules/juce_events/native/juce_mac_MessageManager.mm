@@ -124,6 +124,20 @@ private:
                                                                andSelector: @selector (getUrl:withReplyEvent:)
                                                              forEventClass: kInternetEventClass
                                                                 andEventID: kAEGetURL];
+
+            CFRunLoopObserverRef observer = CFRunLoopObserverCreateWithHandler(NULL,
+                (kCFRunLoopEntry | kCFRunLoopExit), YES, 0,
+                ^(CFRunLoopObserverRef observer, CFRunLoopActivity activity)
+            {
+                if (JUCEApplicationBase* const app = JUCEApplicationBase::getInstance())
+                {
+                    if (activity & kCFRunLoopEntry)
+                        app->preMainRunLoop();
+                    else
+                        app->postMainRunLoop();
+                }
+            });
+            CFRunLoopAddObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);
         }
 
         static NSApplicationTerminateReply applicationShouldTerminate (id /*self*/, SEL, NSApplication*)

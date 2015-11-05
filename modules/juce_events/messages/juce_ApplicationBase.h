@@ -247,6 +247,9 @@ public:
     */
     bool isInitialising() const noexcept                        { return stillInitialising; }
 
+    //==============================================================================
+    virtual void preMainRunLoop() {}
+    virtual void postMainRunLoop() {}
 
     //==============================================================================
    #ifndef DOXYGEN
